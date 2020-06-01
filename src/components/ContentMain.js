@@ -28,7 +28,8 @@ const ContentBody = ({ cardId }) => {
           onChange={(e) => setCard({ ...card, description: e.target.value })}
         />
         <span className='datetext-counter'>
-          <span className='char-counter'>0</span>/150 characters used
+          <span className='char-counter'>{card.description.length}</span>/150
+          characters used
         </span>
       </form>
 
