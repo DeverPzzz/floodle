@@ -4,34 +4,53 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "./Card";
 import cardsData from "./cardsData";
 
-class LayoutLeftColumn extends React.Component {
+class Sidebar extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      loading: false,
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ loading: false }); //change while have API
+    fetch("") //insert link while have API
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({
+          loading: false,
+        });
+      });
+  }
+
   render() {
-    const cardComponents = cardsData
-      .reverse()
-      .map((item) => <Card key={item.id} card={item} />);
-
     return (
-      <section className="layout__left-column">
-        <div className="sidebar">
-          <div className="sidebar__header">
-            <div className="logo">Floodle</div>
-          </div>
-
-          <div className="cards">{cardComponents}</div>
-
-          <div className="sidebar__footer">
-            <button className="info-button button">
-              Created by <br />
-              ...
-            </button>
-            <button className="settings-button button">
-              <FontAwesomeIcon icon={["fas", "cog"]} />
-            </button>
-          </div>
+      <div className="sidebar">
+        <div className="sidebar__header">
+          <div className="logo">Floodle</div>
         </div>
-      </section>
+
+        <div className="cards">
+          {" "}
+          {this.state.loading
+            ? "loading..."
+            : cardsData
+                .reverse()
+                .map((card) => <Card key={card.id} card={card} />)}
+        </div>
+
+        <div className="sidebar__footer">
+          <button className="info-button button">
+            Created by <br />
+            ...
+          </button>
+          <button className="settings-button button">
+            <FontAwesomeIcon icon={["fas", "cog"]} />
+          </button>
+        </div>
+      </div>
     );
   }
 }
 
-export default LayoutLeftColumn;
+export default Sidebar;
