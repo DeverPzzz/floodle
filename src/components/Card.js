@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react'
 
-function Card(props) {
+function Card({ card, onClick }) {
   return (
-    <div className="card">
-      <div className="card__dot card__dot--visible"></div>
-      <div className="card__date">{props.card.cardDate}</div>
-      <div className="card__discription">{props.card.cardDiscription}</div>
+    <div className='card' onClick={onClick}>
+      <div className='card__dot card__dot--visible'></div>
+      <div className='card__date'>{card.date}</div>
+      <div className='card__discription'>{card.description}</div>
     </div>
-  );
+  )
 }
 
-export default Card;
+export default Card

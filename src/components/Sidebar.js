@@ -1,56 +1,55 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState, useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import Card from "./Card";
-import cardsData from "./cardsData";
+import Card from './Card'
+import cardsData from './cardsData'
 
-class Sidebar extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      loading: false,
-    };
-  }
+const Sidebar = ({ onChange }) => {
+  const [isLoading, setIsLoading] = useState(true)
+  const [cards, setCards] = useState([])
 
-  componentDidMount() {
-    this.setState({ loading: false }); //change while have API
-    fetch("") //insert link while have API
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({
-          loading: false,
-        });
-      });
-  }
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false)
+      setCards(cardsData.reverse())
+    }, 3000)
+    // fetch('').then((data) => {
+    //   setIsLoading(false)
+    //   setCards(cardsData.reverse())
+    // }).catch(err => {
+    //   setError('Что-то пошло не так..')
+    // })
+  }, [])
 
-  render() {
-    return (
-      <div className="sidebar">
-        <div className="sidebar__header">
-          <div className="logo">Floodle</div>
-        </div>
-
-        <div className="cards">
-          {" "}
-          {this.state.loading
-            ? "loading..."
-            : cardsData
-                .reverse()
-                .map((card) => <Card key={card.id} card={card} />)}
-        </div>
-
-        <div className="sidebar__footer">
-          <button className="info-button button">
-            Created by <br />
-            ...
-          </button>
-          <button className="settings-button button">
-            <FontAwesomeIcon icon={["fas", "cog"]} />
-          </button>
-        </div>
+  return (
+    <div className='sidebar'>
+      <div className='sidebar__header'>
+        <div className='logo'>Floodle</div>
       </div>
-    );
-  }
+
+      <div className='cards'>
+        {isLoading
+          ? 'loading...'
+          : cards.map((card) => (
+              <Card
+                key={card.id}
+                card={card}
+                onClick={() => onChange(card.id)}
+              />
+            ))}
+      </div>
+
+      <div className='sidebar__footer'>
+        <button className='info-button button'>
+          Created by <br />
+          ...
+        </button>
+        <button className='settings-button button'>
+          <FontAwesomeIcon icon={['fas', 'cog']} />
+        </button>
+      </div>
+    </div>
+  )
 }
 
-export default Sidebar;
+export default Sidebar

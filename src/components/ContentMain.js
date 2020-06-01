@@ -1,61 +1,51 @@
-import React from "react";
-import TextareaAutosize from "react-textarea-autosize";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from 'react'
+import TextareaAutosize from 'react-textarea-autosize'
 
-class ContentBody extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      datetextValue: "",
-      textboxValue: "",
-    };
-  }
+import cardsData from 'components/cardsData'
 
-  handleChange = (event) => {
-    let dateText = document.querySelector(".date-text");
-    let charCounter = document.querySelector(".char-counter");
-    charCounter.textContent = dateText.value.length;
+const ContentBody = ({ cardId }) => {
+  const [card, setCard] = useState({
+    date: new Date().toLocaleDateString(),
+    description: '',
+    content: '',
+  })
 
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
-  }
+  useEffect(() => {
+    if (cardId) setCard(cardsData.find((card) => card.id === cardId))
+  }, [cardId])
 
-  render() {
-    return (
-      <main className="content">
-        <form className="date-inner">
-          <div className="date-header">22.05.20</div>
-          <TextareaAutosize
-            className="date-text"
-            name="datetextValue"
-            value={this.state.datetextValue}
-            rowsMin={1}
-            placeholder="Short note on the date"
-            maxlength="150"
-            onChange={this.handleChange}
-          />
-          <span className="datetext-counter">
-            <span className="char-counter">0</span>/150 characters used
-          </span>
-        </form>
+  return (
+    <main className='content'>
+      <form className='date-inner'>
+        <div className='date-header'>{card.date}</div>
+        <TextareaAutosize
+          className='date-text'
+          name='description'
+          value={card ? card.description : ''}
+          rowsMin={1}
+          placeholder='Short note on the date'
+          maxLength='150'
+          onChange={(e) => setCard({ ...card, description: e.target.value })}
+        />
+        <span className='datetext-counter'>
+          <span className='char-counter'>0</span>/150 characters used
+        </span>
+      </form>
 
-        <form className="text-inner">
-          <div className="text-inner__separator"></div>
-          <div
-            className="textBox"
-            name="textboxValue"
-            autofocus="autofocus"
-            contenteditable="true"
-            onChange={this.handleChange}
-          >
-            {this.state.textboxValue}
-          </div>
-        </form>
-      </main>
-    );
-  }
+      <form className='text-inner'>
+        <div className='text-inner__separator'></div>
+        <div
+          className='textBox'
+          name='textboxValue'
+          autoFocus='autofocus'
+          contenteditable='true'
+          onChange={(e) => setCard({ ...card, content: e.target.value })}
+        >
+          {card.content}
+        </div>
+      </form>
+    </main>
+  )
 }
 
-export default ContentBody;
+export default ContentBody
